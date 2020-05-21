@@ -88,7 +88,7 @@ class Ensemble():
 			ANNClassifier(input_size=self.x.shape[1], hidden_layers=self.hidden_layers),
 			RandomForestClassifier(n_estimators=estimators, n_jobs=-1),
 			ExtraTreesClassifier(n_estimators=estimators, n_jobs=-1),
-			XGBoostClassifier(n_estimators=estimators)
+			XGBoostClassifier(n_estimators=estimators+ 500)
 		], 4
 
 	def _get_sets(self, train, test):
