@@ -18,7 +18,6 @@ def gprint(text):
 
 def save_submission_csv(predictions, method_name):
 	"""Saves the weights and final prediction to the file sytem"""
-	bprint('Saving Results.')
 	date = datetime.now()
 
 	# Create data dictionary 
@@ -58,8 +57,6 @@ def load_data(pre_process=False):
 
 	return training_X, training_y, test_X
 
-def stretch(y):
-	return (y - y.min()) / (y.max() - y.min())
 
 def _get_X(data, training=True):
 	if training:
