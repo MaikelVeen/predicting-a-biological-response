@@ -129,3 +129,6 @@ dmypy.json
 .pyre/
 
 .vscode
+
+# do not commit submissions
+/submissions/*.csv
