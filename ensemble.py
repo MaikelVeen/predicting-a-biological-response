@@ -6,12 +6,16 @@ from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.model_selection import StratifiedKFold
 from sklearn.linear_model import LogisticRegression
 
+from models.xgboost_model import XGBoostClassifier
+
 class Ensemble():
 	""" Wrapper around the main algorithm """
 
-	def __init__(self, folds=10, verbose=True):
+	def __init__(self, folds=10, verbose=True, estimators=1000, nn_layers=4):
 		self.folds = folds
 		self.verbose = verbose
+		self.estimators = estimators
+		self.nn_layers = nn_layers
 		self._load_data()
 
 	def _load_data(self):
@@ -27,7 +31,7 @@ class Ensemble():
 		np.random.seed(420)
 
 		folds = self._get_folds()
-		classifiers, classifier_count = self._build_classifiers(0, 100)
+		classifiers, classifier_count = self._build_classifiers(0, self.estimators)
 
 		# Init train test split blend sets
 		blend_train = np.zeros((self.x.shape[0], classifier_count))
@@ -78,8 +82,9 @@ class Ensemble():
 
 		return [
 			RandomForestClassifier(n_estimators=estimators, n_jobs=-1),
-			ExtraTreesClassifier(n_estimators=estimators, n_jobs=-1)
-		], 2
+			ExtraTreesClassifier(n_estimators=estimators, n_jobs=-1),
+			XGBoostClassifier(n_estimators=estimators)
+		], 3
 
 	def _get_sets(self, train, test):
 		"""
