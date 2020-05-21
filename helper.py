@@ -22,12 +22,17 @@ def save_submission_csv(predictions, method_name):
 
 	# Create data dictionary 
 	data = {'MoleculeId': np.arange(
-			1, len(predictions) + 1), 'PredictedProbability': predictions}
+			1, len(predictions) + 1), 'PredictedProbability': predictions[:, 1]}
 
 	# Create dataframa from dictionary and save to csv
 	df = pd.DataFrame(data, columns=['MoleculeId', 'PredictedProbability'])
-	df.to_csv(
-			f'submission-{date.strftime("%H_%M_%S")}-{method_name}.csv', index=False, header=True)
+
+	# Construct OS indepent path
+	dir_path = os.path.dirname(os.path.abspath(__file__))
+	filename = f'{dir_path}/submissions/submission-{date.strftime("%H_%M_%S")}-{method_name}.csv'
+
+	# Save to csv file
+	df.to_csv(filename, index=False, header=True)
 
 def load_data(pre_process=False):
 	""" Loads and returns a data set"""
