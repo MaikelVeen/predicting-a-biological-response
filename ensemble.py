@@ -7,15 +7,16 @@ from sklearn.model_selection import StratifiedKFold
 from sklearn.linear_model import LogisticRegression
 
 from models.xgboost_model import XGBoostClassifier
+from models.ann_model import ANNClassifier
 
 class Ensemble():
 	""" Wrapper around the main algorithm """
 
-	def __init__(self, folds=10, verbose=True, estimators=1000, nn_layers=4):
+	def __init__(self, folds=10, verbose=True, estimators=1000, hidden_layers=3):
 		self.folds = folds
 		self.verbose = verbose
 		self.estimators = estimators
-		self.nn_layers = nn_layers
+		self.hidden_layers = hidden_layers
 		self._load_data()
 
 	def _load_data(self):
@@ -46,6 +47,8 @@ class Ensemble():
 
 			# Loop trough all the k-folds
 			for f_index, (train, test) in enumerate(folds):
+				helper.cprint(f"Training fold {f_index}")
+
 				x_train, x_test, y_train, y_test = self._get_sets(train, test)
 				classifier.fit(x_train, y_train)
 
@@ -58,6 +61,7 @@ class Ensemble():
 				fold_sum[:, f_index] = sub_pred[:, 1]
 
 			blend_test[:, c_index] = fold_sum.mean(1)
+			helper.gprint(f"Done training {classifier}")
 
 		# Blend the classifiers
 		final_sub = self._blend(blend_train, blend_test)
@@ -81,10 +85,11 @@ class Ensemble():
 			helper.bprint("Initializing ensemble classifiers")
 
 		return [
+			ANNClassifier(input_size=self.x.shape[1], hidden_layers=self.hidden_layers),
 			RandomForestClassifier(n_estimators=estimators, n_jobs=-1),
 			ExtraTreesClassifier(n_estimators=estimators, n_jobs=-1),
 			XGBoostClassifier(n_estimators=estimators)
-		], 3
+		], 4
 
 	def _get_sets(self, train, test):
 		"""
@@ -108,7 +113,7 @@ class Ensemble():
 		""" Saves the final submission to csv using the helper module"""
 
 		if self.verbose:
-			helper.bprint("Saving data to csv")
+			helper.gprint("Saving data to csv")
 		
 		helper.save_submission_csv(submission, "ensemble")
 

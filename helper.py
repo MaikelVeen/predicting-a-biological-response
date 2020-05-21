@@ -16,6 +16,11 @@ def gprint(text):
 	print(f'\033[92m {text} \033[0m')
 
 
+def cprint(text):
+	""" Prints the text in green """
+	print(f'\033[36m {text} \033[0m')
+
+
 def save_submission_csv(predictions, method_name):
 	"""Saves the weights and final prediction to the file sytem"""
 	date = datetime.now()
