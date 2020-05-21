@@ -1,5 +1,7 @@
 import helper
 
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import ExtraTreesClassifier
 
 class Ensemble():
 	"""Wrapper around the main algorithm"""
@@ -17,11 +19,18 @@ class Ensemble():
 
 		self.x, self.y, self.x_test = helper.load_data()
 
-		def stretch(self, y):
-			return (y - y.min()) / (y.max() - y.min())
+	def stretch(self, y):
+		return (y - y.min()) / (y.max() - y.min())
 		
-		def _build_models():
-			pass
+	def _build_classifiers(self, data_dimensions):
+		""" Returns an array containing all the classifiers for the ensemble """
+		if self.verbose:
+			helper.bprint("Initializing ensemble classifiers")
 
-		def run():
-			pass
+		return [
+      RandomForestClassifier(n_estimators=100, n_jobs=-1),
+      ExtraTreesClassifier(n_estimators=100, n_jobs=-1)
+    ]
+
+	def run(self):
+		models = self._build_classifiers(0)
