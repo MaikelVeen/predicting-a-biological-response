@@ -3,6 +3,7 @@ import numpy as np
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import ExtraTreesClassifier
+from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.model_selection import StratifiedKFold
 from sklearn.linear_model import LogisticRegression
 
@@ -12,11 +13,10 @@ from models.ann_model import ANNClassifier
 class Ensemble():
 	""" Wrapper around the main algorithm """
 
-	def __init__(self, folds=10, verbose=True, estimators=1000, hidden_layers=3):
+	def __init__(self, folds=10, verbose=True, estimators=1000):
 		self.folds = folds
 		self.verbose = verbose
 		self.estimators = estimators
-		self.hidden_layers = hidden_layers
 		self._load_data()
 
 	def _load_data(self):
@@ -85,11 +85,10 @@ class Ensemble():
 			helper.bprint("Initializing ensemble classifiers")
 
 		return [
-			ANNClassifier(input_size=self.x.shape[1], hidden_layers=self.hidden_layers),
 			RandomForestClassifier(n_estimators=estimators, n_jobs=-1),
 			ExtraTreesClassifier(n_estimators=estimators, n_jobs=-1),
-			XGBoostClassifier(n_estimators=estimators+ 500)
-		], 4
+			XGBoostClassifier(n_estimators=estimators+ 500),
+		], 3
 
 	def _get_sets(self, train, test):
 		"""

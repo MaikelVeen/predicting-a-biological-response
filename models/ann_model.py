@@ -36,6 +36,8 @@ class ANNClassifier():
 		self.model.add(Dense(self.classes,activation='sigmoid'))
 		self.model.compile(loss='categorical_crossentropy', optimizer='adam')
 
+		print(self.model.summary())
+
 	def fit(self, x, y):
 		y = util.to_categorical(y, 2)
 		self.model.fit(x, y)
