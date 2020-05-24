@@ -46,6 +46,9 @@ def load_data(pre_process=False):
 	training_data = pd.read_csv(f'{dir_path}/data/train.csv')
 	test_data = pd.read_csv(f'{dir_path}/data/test.csv')
 	
+	training_data = training_data.drop(['D353', 'D1502', 'D1676', 'D399', 'D428', 'D908', 'D1639', 'D468', 'D801', 'D544', 'D400', 'D771', 'D371', 'D833', 'D1683', 'D484', 'D910', 'D404', 'D465', 'D500', 'D708', 'D896', 'D823', 'D415', 'D682', 'D615', 'D467', 'D898', 'D849', 'D632', 'D605', 'D345', 'D797', 'D1529', 'D1542', 'D1296', 'D631', 'D235', 'D284', 'D876', 'D630', 'D616', 'D619', 'D570', 'D450', 'D339', 'D680', 'D874', 'D581', 'D1240'], axis=1)
+	test_data = test_data.drop(['D353', 'D1502', 'D1676', 'D399', 'D428', 'D908', 'D1639', 'D468', 'D801', 'D544', 'D400', 'D771', 'D371', 'D833', 'D1683', 'D484', 'D910', 'D404', 'D465', 'D500', 'D708', 'D896', 'D823', 'D415', 'D682', 'D615', 'D467', 'D898', 'D849', 'D632', 'D605', 'D345', 'D797', 'D1529', 'D1542', 'D1296', 'D631', 'D235', 'D284', 'D876', 'D630', 'D616', 'D619', 'D570', 'D450', 'D339', 'D680', 'D874', 'D581', 'D1240'], axis=1)
+	
 	training_X = _get_X(training_data)
 	training_y = _get_y(training_data)
 	test_X = _get_X(test_data, False)
